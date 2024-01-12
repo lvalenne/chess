@@ -1,6 +1,6 @@
 Spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/chessmate
+    url: jdbc:postgresql://localhost:5432/echec
     username: postgres
     password: demoPassword
     driver-class-name: org.postgresql.Driver

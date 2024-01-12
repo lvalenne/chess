@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -42,11 +44,12 @@ public class Tournoi {
     @Size(max = 255)
     @NotNull
     @Column(name = "categories", nullable = false)
-    private String categories;
+    @Enumerated(value = EnumType.STRING)
+    private Set<Categorie> categories;
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "statut", nullable = false)
+    @Column(name = "statut")
     private String statut;
 
     @Column(name = "ronde_courante")
@@ -64,5 +67,13 @@ public class Tournoi {
 
     @Column(name = "date_maj")
     private LocalDate dateMaj;
+
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "tournoi_id")
+    private Set<Rencontre> rencontres = new LinkedHashSet<>();
+
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "tournoi_id")
+    private Set<Inscription> inscriptions = new LinkedHashSet<>();
 
 }
