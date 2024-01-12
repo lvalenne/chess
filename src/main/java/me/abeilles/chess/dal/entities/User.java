@@ -2,6 +2,7 @@ package me.abeilles.chess.dal.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import jdk.jfr.Enabled;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -63,6 +64,8 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Set<UserRole> roles;
 
+    private boolean enabled;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
@@ -72,26 +75,26 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return pseudo;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return enabled;
     }
 }
