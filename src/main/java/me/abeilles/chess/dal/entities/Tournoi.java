@@ -1,12 +1,15 @@
 package me.abeilles.chess.dal.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -29,15 +32,21 @@ public class Tournoi {
     @Column(name = "lieu")
     private String lieu;
 
+    @Min(value = 2, message = "nombre minimum doit etre de 2 joueurs")
     @Column(name = "nb_min_joueurs")
     private Integer nbMinJoueurs;
 
+    @Max(value = 32,message = "nombre maximum est de 32 joueurs")
     @Column(name = "nb_max_joueurs")
     private Integer nbMaxJoueurs;
 
+    @Min(value = 0, message = "Le niveau min ne peut pas être inférieur à 0")
+    @Max(value = 3000, message = "Le niveau min ne peut pas être supérieur à 3000")
     @Column(name = "elo_min")
     private Integer eloMin;
 
+    @Min(value = 0, message = "Le niveau max ne peut pas être inférieur à 0")
+    @Max(value = 3000, message = "Le niveau max ne peut pas être supérieur à 3000")
     @Column(name = "elo_max")
     private Integer eloMax;
 
@@ -63,10 +72,10 @@ public class Tournoi {
     private LocalDate dateFinInscriptions;
 
     @Column(name = "date_creation")
-    private LocalDate dateCreation;
+    private LocalDateTime dateCreation = LocalDateTime.now();
 
     @Column(name = "date_maj")
-    private LocalDate dateMaj;
+    private LocalDateTime dateMaj = LocalDateTime.now();
 
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "tournoi_id")
