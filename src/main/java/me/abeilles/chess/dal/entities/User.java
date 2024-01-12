@@ -1,12 +1,17 @@
 package me.abeilles.chess.dal.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -15,7 +20,7 @@ import java.time.LocalDate;
         @Index(name = "joueur_pseudo_key", columnList = "pseudo", unique = true),
         @Index(name = "joueur_email_key", columnList = "email", unique = true)
 })
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -47,12 +52,46 @@ public class User {
     Genre genre;
 
     @Column(name = "elo")
-    private Integer elo;
+    @Min(value = 0, message = "Le chiffre ne peut pas être inférieur à 0")
+    @Max(value = 3000, message = "Le chiffre ne peut pas être supérieur à 3000")
+
+    private Integer elo = 1200;
 
     @Size(max = 20)
     @NotNull
-    @Column(name = "role", nullable = false, length = 20)
-    @Enumerated
-    UserRole role;
+    @Column(name = "roles", nullable = false, length = 20)
+    @Enumerated(value = EnumType.STRING)
+    private Set<UserRole> roles;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_"+role))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }
