@@ -2,12 +2,15 @@ package me.abeilles.chess.dal.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import jdk.jfr.Enabled;
+
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -97,4 +100,17 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
+    private static String generateRandomPassword() {
+
+        // Génère une chaîne de caractères aléatoire
+        String randomString = RandomStringUtils.randomAlphanumeric(16);
+
+        return randomString;
+    }
+
+    private static String sendMailPasswordAndSetPassword(){
+        return null;
+    }
+
 }

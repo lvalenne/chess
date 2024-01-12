@@ -18,5 +18,5 @@ public class Inscription {
     @JoinColumn(name = "rencontre_id")
     private Rencontre rencontre;
 
-//TODO [JPA Buddy] generate columns from DB
+
 }
