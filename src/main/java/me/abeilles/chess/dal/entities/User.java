@@ -49,10 +49,10 @@ public class User implements UserDetails {
     @Column(name = "date_naissance", nullable = false)
     private LocalDate dateNaissance;
 
-    @Size(max = 10)
+
     @NotNull
     @Column(name = "genre", nullable = false, length = 10)
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     Genre genre;
 
     @Column(name = "elo")
@@ -61,7 +61,7 @@ public class User implements UserDetails {
 
     private Integer elo = 1200;
 
-    @Size(max = 20)
+    //@Size(max = 20)
     @NotNull
     @Column(name = "roles", nullable = false, length = 20)
     @Enumerated(value = EnumType.STRING)

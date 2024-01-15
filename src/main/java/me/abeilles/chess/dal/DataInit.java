@@ -36,6 +36,7 @@ public class DataInit implements InitializingBean {
         user.setEnabled(true);
         user.setDateNaissance(LocalDate.parse("1990-01-01"));
         user.setPassword(passwordEncoder.encode("mate"));
+       // userRepository.save(user);
 
     }
 }
