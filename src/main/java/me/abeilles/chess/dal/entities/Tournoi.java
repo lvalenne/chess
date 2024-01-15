@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.EnumSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -60,10 +61,10 @@ public class Tournoi {
     @NotNull
     @Column(name = "statut")
     @Enumerated
-    private Set<Statut> statut;
+    private Set<Statut> statut = EnumSet.of(Statut.EN_ATTENTE_DE_JOUEURS);
 
     @Column(name = "ronde_courante")
-    private Integer rondeCourante;
+    private Integer rondeCourante = 0;
 
     @Column(name = "women_only")
     private Boolean womenOnly;

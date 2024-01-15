@@ -3,12 +3,13 @@ package me.abeilles.chess.pl.model.tournoi;
 import jakarta.validation.constraints.*;
 
 import me.abeilles.chess.dal.entities.Categorie;
+import me.abeilles.chess.dal.entities.Statut;
 
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record TournoiForm(
+public record TournoiFormCreate(
         @NotNull
         @NotBlank
         String nom,
@@ -40,18 +41,11 @@ public record TournoiForm(
 
         @NotNull
 
-        String statut,
+        Statut statut,
 
         Boolean womenOnly,
 
-        LocalDate dateFinInscriptions,
-
-
-        LocalDateTime dateCreation,
-
-        LocalDateTime dateMaj
-
-
+        LocalDate dateFinInscriptions
 
 ) {
 }
