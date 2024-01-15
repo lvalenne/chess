@@ -59,7 +59,8 @@ public class Tournoi {
     @Size(max = 255)
     @NotNull
     @Column(name = "statut")
-    private String statut;
+    @Enumerated
+    private Set<Statut> statut;
 
     @Column(name = "ronde_courante")
     private Integer rondeCourante;
