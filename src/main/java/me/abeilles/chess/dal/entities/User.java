@@ -68,6 +68,7 @@ public class User implements UserDetails {
     private Set<UserRole> roles;
 
     private boolean enabled;
+    private boolean deleted;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

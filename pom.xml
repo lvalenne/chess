@@ -79,6 +79,11 @@
             <artifactId>jpastreamer-core</artifactId>
             <version>3.0.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.speedment.jpastreamer</groupId>
+            <artifactId>jpastreamer-core</artifactId>
+            <version>3.0.4</version>
+        </dependency>
     </dependencies>
 
     <build>

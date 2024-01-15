@@ -38,6 +38,8 @@ public record JoueurForm(
     @NotNull
    Set<UserRole> roles,
 
-    boolean enabled
+    boolean enabled,
+
+    boolean deleted
 ) {
 }
