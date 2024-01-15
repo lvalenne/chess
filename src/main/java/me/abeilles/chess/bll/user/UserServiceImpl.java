@@ -1,5 +1,6 @@
 package me.abeilles.chess.bll.user;
 
+
 import me.abeilles.chess.dal.entities.User;
 import me.abeilles.chess.dal.repositories.UserRepository;
 import me.abeilles.chess.pl.config.security.JWTProvider;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService{
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(form.getLogin(),form.getPassword()));
 
-        User user = userRepository.findByPseudo(form.getLogin()).get();
+        User user = userRepository.findByPseudoOrEmail((form.getLogin()), form.getLogin()).get();
 
         String token = jwtProvider.generateToken(user.getUsername(), user.getEmail(),List.copyOf(user.getRoles()));
 
@@ -44,4 +45,7 @@ public class UserServiceImpl implements UserService{
                 .roles(user.getRoles())
                 .build();
     }
+
+
+
 }
