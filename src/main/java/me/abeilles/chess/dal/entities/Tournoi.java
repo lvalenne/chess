@@ -55,7 +55,7 @@ public class Tournoi {
     @NotNull
     @Column(name = "categories", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Set<Categorie> categories;
+    private Categorie categorie;
 
     @Size(max = 255)
     @NotNull

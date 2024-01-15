@@ -38,11 +38,6 @@ public record TournoiFormCreate(
 
         Categorie categories,
 
-
-        @NotNull
-
-        Statut statut,
-
         Boolean womenOnly,
 
         LocalDate dateFinInscriptions
