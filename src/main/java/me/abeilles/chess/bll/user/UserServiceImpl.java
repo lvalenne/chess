@@ -35,11 +35,12 @@ public class UserServiceImpl implements UserService{
 
         User user = userRepository.findByPseudo(form.getLogin()).get();
 
-        String token = jwtProvider.generateToken(user.getUsername(), List.copyOf(user.getRoles()));
+        String token = jwtProvider.generateToken(user.getUsername(), user.getEmail(),List.copyOf(user.getRoles()));
 
         return AuthDTO.builder()
                 .token(token)
                 .login(user.getPseudo())
+                .email(user.getEmail())
                 .roles(user.getRoles())
                 .build();
     }

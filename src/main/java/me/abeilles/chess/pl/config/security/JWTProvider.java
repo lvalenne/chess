@@ -33,9 +33,10 @@ public class JWTProvider {
         this.userDetailsService = userDetailsService;
     }
 
-    public String generateToken(String pseudo, List<UserRole> roles){
+    public String generateToken(String pseudo, String email, List<UserRole> roles){
         return TOKEN_PREFIX + JWT.create()
             .withSubject(pseudo)
+            .withClaim("email", email)
             .withClaim("roles",roles.stream().map(Enum::toString).toList())
             .withExpiresAt(Instant.now().plusMillis(EXPIRES_AT))
             .sign(Algorithm.HMAC512(JWT_SECRET));
@@ -57,6 +58,7 @@ public class JWTProvider {
             DecodedJWT jwt = JWT.require(Algorithm.HMAC512(JWT_SECRET))
                     .acceptExpiresAt(EXPIRES_AT)
                     .withClaimPresence("sub")
+                    .withClaimPresence("email")
                     .withClaimPresence("roles")
                     .build()
                     .verify(token);

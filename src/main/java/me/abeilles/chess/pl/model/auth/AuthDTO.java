@@ -10,6 +10,7 @@ import java.util.Set;
 @Builder
 public class AuthDTO {
     private String login;
+    private String email;
     private String token;
     private Set<UserRole> roles;
 }

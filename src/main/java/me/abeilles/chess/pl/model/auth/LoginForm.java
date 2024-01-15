@@ -8,5 +8,6 @@ import java.util.Set;
 @Builder
 public class LoginForm {
     private String login;
+    private String email;
     private String password;
 }
