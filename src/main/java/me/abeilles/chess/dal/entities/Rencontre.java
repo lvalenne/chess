@@ -26,8 +26,9 @@ public class Rencontre {
     @Column(name = "numero_ronde")
     private Integer numeroRonde;
 
-    @Size(max = 10)
-    @Column(name = "resultat", length = 10)
-    private String resultat;
+    @Column(name = "resultat")
+    @Enumerated(value = EnumType.STRING)
+    private Resultat resultat;
+
 
 }

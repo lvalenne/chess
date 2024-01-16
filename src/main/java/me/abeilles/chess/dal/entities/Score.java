@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @Entity
@@ -16,9 +14,7 @@ public class Score {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_joueur")
-    private User idJoueur;
+
 
     @Column(name = "numero_ronde")
     private Integer numeroRonde;
@@ -35,7 +31,8 @@ public class Score {
     @Column(name = "egalites")
     private Integer egalites;
 
-    @Column(name = "score", precision = 3, scale = 1)
-    private BigDecimal score;
+    @ManyToOne
+    @JoinColumn(name = "rencontre_id")
+    private Rencontre rencontre;
 
 }
