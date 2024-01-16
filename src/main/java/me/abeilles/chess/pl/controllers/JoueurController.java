@@ -24,7 +24,7 @@ public class JoueurController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
-    public void create(@RequestBody @Valid JoueurForm form, Authentication authentication){
+    public void create(@RequestBody @Valid JoueurForm form){
         joueurService.create(form);
     }
 

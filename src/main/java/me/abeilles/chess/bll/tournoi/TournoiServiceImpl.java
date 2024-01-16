@@ -1,13 +1,21 @@
 package me.abeilles.chess.bll.tournoi;
-
+import me.abeilles.chess.bll.exceptions.ForbiddenExeption;
+import me.abeilles.chess.bll.exceptions.NotFoundException;
+import me.abeilles.chess.dal.entities.Statut;
 import me.abeilles.chess.dal.entities.Tournoi;
 import me.abeilles.chess.dal.repositories.TournoiRepsoitory;
 import me.abeilles.chess.pl.model.tournoi.TournoiFormCreate;
+
 import org.springframework.stereotype.Service;
+
+import java.util.EnumSet;
+import java.util.Objects;
 
 @Service
 public class TournoiServiceImpl implements TournoiService{
-    public final TournoiRepsoitory tournoiRepsoitory;
+    private final TournoiRepsoitory tournoiRepsoitory;
+
+
 
     public TournoiServiceImpl(TournoiRepsoitory tournoiRepsoitory) {
         this.tournoiRepsoitory = tournoiRepsoitory;
@@ -27,6 +35,20 @@ public class TournoiServiceImpl implements TournoiService{
         tournoi.setWomenOnly(form.womenOnly());
         tournoi.setDateFinInscriptions(form.dateFinInscriptions());
         tournoiRepsoitory.save(tournoi);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        Tournoi tournoi = getOneById(id);
+        if(Objects.equals(tournoi.getStatut(), EnumSet.of(Statut.EN_ATTENTE_DE_JOUEURS))){
+            tournoiRepsoitory.delete(tournoi);
+        }
+        throw new ForbiddenExeption("Action interdite, tournoi encours ou terminé");
+    }
+
+    @Override
+    public Tournoi getOneById(Integer id) {
+        return tournoiRepsoitory.findById(id).orElseThrow(() -> new NotFoundException("tournoi pas trouvé"));
     }
 
 }

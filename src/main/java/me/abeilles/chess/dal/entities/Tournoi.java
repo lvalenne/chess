@@ -51,16 +51,18 @@ public class Tournoi {
     @Column(name = "elo_max")
     private Integer eloMax;
 
-    @Size(max = 255)
-    @NotNull
+
+
     @Column(name = "categories", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Categorie categorie;
 
+
+
     @Size(max = 255)
     @NotNull
     @Column(name = "statut")
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     private Set<Statut> statut = EnumSet.of(Statut.EN_ATTENTE_DE_JOUEURS);
 
     @Column(name = "ronde_courante")
@@ -87,4 +89,11 @@ public class Tournoi {
     @JoinColumn(name = "tournoi_id")
     private Set<Inscription> inscriptions = new LinkedHashSet<>();
 
+
+    public void setDateFinInscriptions(LocalDate dateFinInscriptions) {
+        if(dateFinInscriptions.isBefore(LocalDate.now()) || dateFinInscriptions.isBefore(LocalDate.now().plusDays(nbMinJoueurs))){
+            throw new IllegalArgumentException("La date de fin d'inscription n'est pas valide");
+        }
+        this.dateFinInscriptions = dateFinInscriptions;
+    }
 }

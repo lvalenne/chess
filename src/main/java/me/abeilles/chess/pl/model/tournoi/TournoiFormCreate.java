@@ -16,23 +16,22 @@ public record TournoiFormCreate(
 
 
         String lieu,
-        @NotBlank
+
         @Min(value = 2, message = "nombre minimum doit etre de 2 joueurs")
         Integer nbMinJoueurs,
 
         @Max(value = 32,message = "nombre maximum est de 32 joueurs")
-        @NotBlank
         Integer nbMaxJoueurs,
 
         @Min(value = 0, message = "Le niveau min ne peut pas être inférieur à 0")
         @Max(value = 3000, message = "Le niveau min ne peut pas être supérieur à 3000")
 
-        @NotBlank
+
         Integer eloMin,
 
         @Min(value = 0, message = "Le niveau max ne peut pas être inférieur à 0")
         @Max(value = 3000, message = "Le niveau max ne peut pas être supérieur à 3000")
-        @NotBlank
+
         Integer eloMax,
 
 

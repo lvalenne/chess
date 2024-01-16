@@ -80,10 +80,11 @@
             <version>3.0.4</version>
         </dependency>
         <dependency>
-            <groupId>com.speedment.jpastreamer</groupId>
-            <artifactId>jpastreamer-core</artifactId>
-            <version>3.0.4</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>3.2.1</version>
         </dependency>
+
     </dependencies>
 
     <build>
