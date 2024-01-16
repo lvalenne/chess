@@ -42,8 +42,8 @@ public class TournoiServiceImpl implements TournoiService{
         Tournoi tournoi = getOneById(id);
         if(Objects.equals(tournoi.getStatut(), EnumSet.of(Statut.EN_ATTENTE_DE_JOUEURS))){
             tournoiRepsoitory.delete(tournoi);
-        }
-        throw new ForbiddenExeption("Action interdite, tournoi encours ou terminé");
+        } else {
+        throw new ForbiddenExeption("Action interdite, tournoi en cours ou terminé");}
     }
 
     @Override

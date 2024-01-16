@@ -64,5 +64,18 @@ public class DataInit implements InitializingBean {
         tournoi.setWomenOnly(false);
         tournoiRepsoitory.save(tournoi);
 
+        Tournoi tournoi2 = new Tournoi();
+        tournoi2.setNom("tournoi deux");
+        tournoi2.setLieu("forem");
+        tournoi2.setNbMinJoueurs(10);
+        tournoi2.setNbMaxJoueurs(20);
+        tournoi2.setEloMin(500);
+        tournoi2.setEloMax(3000);
+        tournoi2.setCategorie(Categorie.VETERAN);
+        tournoi2.setDateFinInscriptions(LocalDate.parse("2024-10-30"));
+        tournoi2.setWomenOnly(false);
+        tournoiRepsoitory.save(tournoi2);
+
+
     }
 }
