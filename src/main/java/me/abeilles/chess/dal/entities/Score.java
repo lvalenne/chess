@@ -31,8 +31,16 @@ public class Score {
     @Column(name = "egalites")
     private Integer egalites;
 
+    @Column(name="score")
+    private Double score;
+
     @ManyToOne
-    @JoinColumn(name = "rencontre_id")
-    private Rencontre rencontre;
+    @JoinColumn(name = "tournoi_id")
+    private Tournoi tournoi;
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

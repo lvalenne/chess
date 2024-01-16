@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -70,6 +71,9 @@ public class User implements UserDetails {
     private boolean enabled;
     private boolean deleted;
 
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private Set<Score> scores = new LinkedHashSet<>();
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
@@ -101,6 +105,8 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
+
 
     private static String generateRandomPassword() {
 

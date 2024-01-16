@@ -59,11 +59,9 @@ public class Tournoi {
 
 
 
-    @Size(max = 255)
-    @NotNull
     @Column(name = "statut")
     @Enumerated(value = EnumType.STRING)
-    private Set<Statut> statut = EnumSet.of(Statut.EN_ATTENTE_DE_JOUEURS);
+    private Statut statut = Statut.EN_ATTENTE_DE_JOUEURS;
 
     @Column(name = "ronde_courante")
     private Integer rondeCourante = 0;
@@ -81,6 +79,9 @@ public class Tournoi {
     @Column(name = "date_maj")
     private LocalDateTime dateMaj = LocalDateTime.now();
 
+    @Column(name = "nombre_inscription")
+    private Integer nombreInscriptions = 0;
+
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "tournoi_id")
     private Set<Rencontre> rencontres = new LinkedHashSet<>();
@@ -89,6 +90,8 @@ public class Tournoi {
     @JoinColumn(name = "tournoi_id")
     private Set<Inscription> inscriptions = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "tournoi", orphanRemoval = true)
+    private Set<Score> scores = new LinkedHashSet<>();
 
     public void setDateFinInscriptions(LocalDate dateFinInscriptions) {
         if(dateFinInscriptions.isBefore(LocalDate.now()) || dateFinInscriptions.isBefore(LocalDate.now().plusDays(nbMinJoueurs))){

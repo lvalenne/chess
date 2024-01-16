@@ -1,17 +1,15 @@
 package me.abeilles.chess.pl.model.tournoi;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import me.abeilles.chess.dal.entities.Categorie;
 import me.abeilles.chess.dal.entities.Statut;
+import me.abeilles.chess.dal.entities.Tournoi;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record TournoiDTO(
-                         String nom,
+                        Integer id,
+                        String nom,
 
 
                          String lieu,
@@ -38,4 +36,7 @@ public record TournoiDTO(
                          LocalDateTime dateCreation,
 
                          LocalDateTime dateMaj) {
+    public static TournoiDTO fromEntity(Tournoi tournoi){
+        return new TournoiDTO(tournoi.getId(), tournoi.getNom(), tournoi.getLieu(), tournoi.getNbMinJoueurs(), tournoi.getNbMinJoueurs(), tournoi.getEloMin(), tournoi.getEloMax(), tournoi.getCategorie(),tournoi.getStatut(),tournoi.getWomenOnly(),tournoi.getDateFinInscriptions(),tournoi.getDateCreation(),tournoi.getDateMaj());
+    }
 }

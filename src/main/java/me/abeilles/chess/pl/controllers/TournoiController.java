@@ -2,9 +2,14 @@ package me.abeilles.chess.pl.controllers;
 
 import jakarta.validation.Valid;
 import me.abeilles.chess.bll.tournoi.TournoiService;
+import me.abeilles.chess.pl.model.tournoi.TournoiDTOReadAll;
 import me.abeilles.chess.pl.model.tournoi.TournoiFormCreate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/tournoi")
@@ -25,6 +30,12 @@ public class TournoiController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id){
         tournoiService.delete(id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/all")
+    public ResponseEntity<List<TournoiDTOReadAll>> getAll(){
+        return ResponseEntity.ok(tournoiService.getAll());
     }
 
 

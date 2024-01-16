@@ -1,24 +1,29 @@
 package me.abeilles.chess.bll.tournoi;
 import me.abeilles.chess.bll.exceptions.ForbiddenExeption;
 import me.abeilles.chess.bll.exceptions.NotFoundException;
+import me.abeilles.chess.dal.entities.Inscription;
 import me.abeilles.chess.dal.entities.Statut;
 import me.abeilles.chess.dal.entities.Tournoi;
+import me.abeilles.chess.dal.repositories.InscriptionRepository;
 import me.abeilles.chess.dal.repositories.TournoiRepsoitory;
+import me.abeilles.chess.pl.model.tournoi.TournoiDTO;
+import me.abeilles.chess.pl.model.tournoi.TournoiDTOReadAll;
 import me.abeilles.chess.pl.model.tournoi.TournoiFormCreate;
 
 import org.springframework.stereotype.Service;
 
-import java.util.EnumSet;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class TournoiServiceImpl implements TournoiService{
     private final TournoiRepsoitory tournoiRepsoitory;
+    private final InscriptionRepository inscriptionRepository;
 
 
-
-    public TournoiServiceImpl(TournoiRepsoitory tournoiRepsoitory) {
+    public TournoiServiceImpl(TournoiRepsoitory tournoiRepsoitory, InscriptionRepository inscriptionRepository) {
         this.tournoiRepsoitory = tournoiRepsoitory;
+        this.inscriptionRepository = inscriptionRepository;
     }
 
     @Override
@@ -44,6 +49,16 @@ public class TournoiServiceImpl implements TournoiService{
             tournoiRepsoitory.delete(tournoi);
         } else {
         throw new ForbiddenExeption("Action interdite, tournoi en cours ou terminé");}
+    }
+
+    @Override
+    public List<TournoiDTOReadAll> getAll() {
+        return new HashSet<>(tournoiRepsoitory.findAll()
+        )           .stream().map(TournoiDTOReadAll::fromEntity)
+                    .filter(e -> e.statut() != Statut.TERMINE)
+                    .sorted(Comparator.comparing(TournoiDTOReadAll::datemaj).reversed())
+                    .limit(10)
+                    .collect(Collectors.toList());
     }
 
     @Override
