@@ -1,6 +1,7 @@
 package me.abeilles.chess.bll.tournoi;
 
 import me.abeilles.chess.dal.entities.Tournoi;
+import me.abeilles.chess.pl.model.tournoi.TournoiDTOGetOne;
 import me.abeilles.chess.pl.model.tournoi.TournoiDTOReadAll;
 import me.abeilles.chess.pl.model.tournoi.TournoiFormCreate;
 
@@ -13,5 +14,5 @@ void delete(Integer id);
 
 List<TournoiDTOReadAll> getAll();
 
-Tournoi getOneById(Integer id);
+TournoiDTOGetOne getOneById(Integer id);
 }

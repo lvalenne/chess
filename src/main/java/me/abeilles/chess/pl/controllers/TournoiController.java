@@ -43,7 +43,7 @@ public class TournoiController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
-    public Tournoi getOne(@PathVariable Integer id){
+    public TournoiDTOGetOne getOne(@PathVariable Integer id){
         return tournoiService.getOneById(id);
     }
 

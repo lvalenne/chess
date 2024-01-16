@@ -7,6 +7,7 @@ import me.abeilles.chess.dal.entities.Tournoi;
 import me.abeilles.chess.dal.repositories.InscriptionRepository;
 import me.abeilles.chess.dal.repositories.TournoiRepsoitory;
 import me.abeilles.chess.pl.model.tournoi.TournoiDTO;
+import me.abeilles.chess.pl.model.tournoi.TournoiDTOGetOne;
 import me.abeilles.chess.pl.model.tournoi.TournoiDTOReadAll;
 import me.abeilles.chess.pl.model.tournoi.TournoiFormCreate;
 
@@ -44,7 +45,7 @@ public class TournoiServiceImpl implements TournoiService{
 
     @Override
     public void delete(Integer id) {
-        Tournoi tournoi = getOneById(id);
+        Tournoi tournoi = tournoiRepsoitory.findById(id).orElseThrow(() -> new NotFoundException("tournoi pas trouvé"));
         if(Objects.equals(tournoi.getStatut(), EnumSet.of(Statut.EN_ATTENTE_DE_JOUEURS))){
             tournoiRepsoitory.delete(tournoi);
         } else {
@@ -62,8 +63,8 @@ public class TournoiServiceImpl implements TournoiService{
     }
 
     @Override
-    public Tournoi getOneById(Integer id) {
-        return tournoiRepsoitory.findById(id).orElseThrow(() -> new NotFoundException("tournoi pas trouvé"));
+    public TournoiDTOGetOne getOneById(Integer id) {
+        return TournoiDTOGetOne.fromEntity(tournoiRepsoitory.findById(id).orElseThrow(() -> new NotFoundException("tournoi pas trouvé")));
     }
 
 }
