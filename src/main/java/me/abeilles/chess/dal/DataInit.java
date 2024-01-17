@@ -1,6 +1,7 @@
 package me.abeilles.chess.dal;
 
 import me.abeilles.chess.dal.entities.*;
+import me.abeilles.chess.dal.repositories.InscriptionRepository;
 import me.abeilles.chess.dal.repositories.TournoiRepsoitory;
 import me.abeilles.chess.dal.repositories.UserRepository;
 import org.springframework.beans.factory.InitializingBean;
@@ -15,11 +16,13 @@ import java.util.HashSet;
 public class DataInit implements InitializingBean {
     private final UserRepository userRepository;
     private final TournoiRepsoitory tournoiRepsoitory;
+    private final InscriptionRepository inscriptionRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public DataInit(UserRepository userRepository, TournoiRepsoitory tournoiRepsoitory, PasswordEncoder passwordEncoder) {
+    public DataInit(UserRepository userRepository, TournoiRepsoitory tournoiRepsoitory, InscriptionRepository inscriptionRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.tournoiRepsoitory = tournoiRepsoitory;
+        this.inscriptionRepository = inscriptionRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -203,9 +206,15 @@ public class DataInit implements InitializingBean {
         tournoi13.setNbMaxJoueurs(20);
         tournoi13.setEloMin(500);
         tournoi13.setEloMax(3000);
-        tournoi13.setCategorie(Categorie.VETERAN);
+        tournoi13.setCategorie(Categorie.SENIOR);
         tournoi13.setDateFinInscriptions(LocalDate.parse("2024-10-30"));
         tournoi13.setWomenOnly(false);
         tournoiRepsoitory.save(tournoi13);
+
+        Inscription inscription = new Inscription();
+        inscription.setTournoi(tournoi13);
+        inscription.setUser(user2);
+        inscriptionRepository.save(inscription);
     }
+
 }

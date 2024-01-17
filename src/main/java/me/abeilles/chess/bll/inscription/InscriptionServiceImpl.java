@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 @Service
-public class InscriptionServiceImpl implements InscriptionService{
+public class InscriptionServiceImpl implements InscriptionService {
     private final UserRepository userRepository;
     private final TournoiRepsoitory tournoiRepsoitory;
     private final InscriptionRepository inscriptionRepository;
@@ -26,27 +26,37 @@ public class InscriptionServiceImpl implements InscriptionService{
         this.inscriptionRepository = inscriptionRepository;
     }
 
-    public void inscriptionTournoi(Integer id, String pseudo){
+
+    @Override
+    public void inscriptionTournoi(Integer id, String pseudo) {
         Tournoi tournoi = tournoiRepsoitory.findById(id).orElseThrow(() -> new NotFoundException("tournoi pas trouvé"));
         User user = userRepository.findByPseudo(pseudo).orElseThrow(() -> new NotFoundException("utilisateur pas trouvé"));
         Inscription inscription = new Inscription();
 
         int age = Period.between(user.getDateNaissance(), tournoi.getDateFinInscriptions()).getYears();
 
-        if(tournoi.getDateFinInscriptions().isBefore(LocalDate.now())){throw new InscriptionException("Date d'inscription dépassée");
-        } else if (tournoi.getStatut() != Statut.EN_COURS) {throw new InscriptionException("Le trounoi n'est pas en cours");
+        if (tournoi.getDateFinInscriptions().isBefore(LocalDate.now())) {
+            throw new InscriptionException("Date d'inscription dépassée");
+        } else if (tournoi.getStatut() != Statut.EN_ATTENTE_DE_JOUEURS) {
+            throw new InscriptionException("Le trounoi n'est pas en cours");
 
-        } else if (tournoi.getNombreInscriptions() >= tournoi.getNbMaxJoueurs()) {throw new InscriptionException("Le nombre maximum d'inscription est atteint");
+        } else if (tournoi.getNombreInscriptions() >= tournoi.getNbMaxJoueurs()) {
+            throw new InscriptionException("Le nombre maximum d'inscription est atteint");
 
-        } else if (tournoi.getCategorie().equals(Categorie.JUNIOR) && age > 18) {throw new InscriptionException("Tournoi réservé au mooins de 18 ans");
+        } else if (tournoi.getCategorie().equals(Categorie.JUNIOR) && age > 18) {
+            throw new InscriptionException("Tournoi réservé au moins de 18 ans");
 
-        } else if (tournoi.getCategorie().equals(Categorie.SENIOR) && (age < 18 || age >= 60)) {throw new InscriptionException("Tournoi réseervé aux senior");
+        } else if (tournoi.getCategorie().equals(Categorie.SENIOR) && (age < 18 || age >= 60)) {
+            throw new InscriptionException("Tournoi réseervé aux senior");
 
-        } else if (tournoi.getCategorie().equals(Categorie.VETERAN) && age < 60) {throw new InscriptionException("Il faut au moins 60 ans pour participer");
+        } else if (tournoi.getCategorie().equals(Categorie.VETERAN) && age < 60) {
+            throw new InscriptionException("Il faut au moins 60 ans pour participer");
 
-        } else if ((user.getElo() != null) && ((tournoi.getEloMin() > user.getElo() || tournoi.getEloMax() < user.getElo()))){throw new InscriptionException("votre nniveau ne corespond pas a celui du tournoi");
+        } else if ((user.getElo() != null) && ((tournoi.getEloMin() > user.getElo() || tournoi.getEloMax() < user.getElo()))) {
+            throw new InscriptionException("votre nniveau ne corespond pas a celui du tournoi");
 
-        } else if (tournoi.getWomenOnly() && ((user.getGenre().equals(Genre.GARCON)) || user.getGenre().equals(Genre.AUTRE))) {throw new InscriptionException("tournoi réservé aux fiklkles");
+        } else if (tournoi.getWomenOnly() && user.getGenre().equals(Genre.GARCON)) {
+            throw new InscriptionException("tournoi réservé aux filles");
 
         }
         inscription.setDateInscription(LocalDate.now());
@@ -55,5 +65,17 @@ public class InscriptionServiceImpl implements InscriptionService{
 
         inscriptionRepository.save(inscription);
 
+    }
+
+    @Override
+    public void supprimerInscriptionTournoi(Integer id, String pseudo) {
+        Tournoi tournoi = tournoiRepsoitory.findById(id).orElseThrow(() -> new NotFoundException("tournoi pas trouvé"));
+        User user = userRepository.findByPseudo(pseudo).orElseThrow(() -> new NotFoundException("utilisateur pas trouvé"));
+        Inscription inscription = inscriptionRepository.findByUserPseudoAndTournoiId(pseudo, id).orElseThrow(() -> new NotFoundException("inscription pas trouvé"));
+
+        if (tournoi.getStatut() != (Statut.EN_ATTENTE_DE_JOUEURS)) {
+            throw new InscriptionException("le tournoi est déjà en cours ou tyerminé");
+
+        }
     }
 }

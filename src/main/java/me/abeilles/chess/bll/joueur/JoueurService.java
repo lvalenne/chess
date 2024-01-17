@@ -3,7 +3,7 @@ package me.abeilles.chess.bll.joueur;
 import me.abeilles.chess.dal.entities.User;
 import me.abeilles.chess.pl.model.joueur.JoueurDTO;
 import me.abeilles.chess.pl.model.joueur.JoueurForm;
-import org.springframework.security.core.Authentication;
+
 
 import java.util.Set;
 
