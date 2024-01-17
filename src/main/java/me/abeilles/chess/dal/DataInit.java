@@ -48,7 +48,7 @@ public class DataInit implements InitializingBean {
         roles2.add(UserRole.JOUEUR);
         user2.setRoles(roles2);
         user2.setEnabled(true);
-        user2.setDateNaissance(LocalDate.parse("1999-10-01"));
+        user2.setDateNaissance(LocalDate.parse("2000-10-01"));
         user2.setPassword(passwordEncoder.encode("j1"));
         userRepository.save(user2);
 
@@ -67,13 +67,13 @@ public class DataInit implements InitializingBean {
         Tournoi tournoi2 = new Tournoi();
         tournoi2.setNom("tournoi deux");
         tournoi2.setLieu("forem");
-        tournoi2.setNbMinJoueurs(10);
-        tournoi2.setNbMaxJoueurs(20);
-        tournoi2.setEloMin(500);
+        tournoi2.setNbMinJoueurs(2);
+        tournoi2.setNbMaxJoueurs(3);
+        tournoi2.setEloMin(100);
         tournoi2.setEloMax(3000);
         tournoi2.setCategorie(Categorie.VETERAN);
         tournoi2.setDateFinInscriptions(LocalDate.parse("2024-10-30"));
-        tournoi2.setWomenOnly(false);
+        tournoi2.setWomenOnly(true);
         tournoiRepsoitory.save(tournoi2);
 
         Tournoi tournoi3 = new Tournoi();
