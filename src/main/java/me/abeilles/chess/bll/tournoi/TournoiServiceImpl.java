@@ -1,9 +1,7 @@
 package me.abeilles.chess.bll.tournoi;
 import me.abeilles.chess.bll.exceptions.ForbiddenExeption;
 import me.abeilles.chess.bll.exceptions.NotFoundException;
-import me.abeilles.chess.dal.entities.Inscription;
-import me.abeilles.chess.dal.entities.Statut;
-import me.abeilles.chess.dal.entities.Tournoi;
+import me.abeilles.chess.dal.entities.*;
 import me.abeilles.chess.dal.repositories.InscriptionRepository;
 import me.abeilles.chess.dal.repositories.TournoiRepsoitory;
 import me.abeilles.chess.pl.model.tournoi.TournoiDTO;
@@ -65,6 +63,15 @@ public class TournoiServiceImpl implements TournoiService{
     @Override
     public TournoiDTOGetOne getOneById(Integer id) {
         return TournoiDTOGetOne.fromEntity(tournoiRepsoitory.findById(id).orElseThrow(() -> new NotFoundException("tournoi pas trouvé")));
+    }
+
+    @Override
+    public void lance(Integer id) {
+        Tournoi tournoi = tournoiRepsoitory.findById(id).orElseThrow(() -> new NotFoundException("tournoi n'existe pas"));
+        Rencontre rencontre = new Rencontre();
+        Score score = new Score();
+
+
     }
 
 }

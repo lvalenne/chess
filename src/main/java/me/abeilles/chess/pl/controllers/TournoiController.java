@@ -47,4 +47,10 @@ public class TournoiController {
         return tournoiService.getOneById(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/lancer/{id}")
+    public void lanceTournoi(@PathVariable Integer id){
+
+    }
+
 }

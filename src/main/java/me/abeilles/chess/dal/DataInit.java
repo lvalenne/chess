@@ -55,6 +55,19 @@ public class DataInit implements InitializingBean {
         user2.setPassword(passwordEncoder.encode("j1"));
         userRepository.save(user2);
 
+        User user3 = new User();
+        user3.setPseudo("j2");
+        user3.setElo(500);
+        user3.setGenre(Genre.FILLE);
+        user3.setEmail("j2@mate.com");
+        HashSet<UserRole> roles3 = new HashSet<>();
+        roles3.add(UserRole.JOUEUR);
+        user3.setRoles(roles3);
+        user3.setEnabled(true);
+        user3.setDateNaissance(LocalDate.parse("2000-10-01"));
+        user3.setPassword(passwordEncoder.encode("j2"));
+        userRepository.save(user3);
+
         Tournoi tournoi = new Tournoi();
         tournoi.setNom("tournois un");
         tournoi.setLieu("forem");
@@ -74,7 +87,7 @@ public class DataInit implements InitializingBean {
         tournoi2.setNbMaxJoueurs(3);
         tournoi2.setEloMin(100);
         tournoi2.setEloMax(3000);
-        tournoi2.setCategorie(Categorie.VETERAN);
+        tournoi2.setCategorie(Categorie.SENIOR);
         tournoi2.setDateFinInscriptions(LocalDate.parse("2024-10-30"));
         tournoi2.setWomenOnly(true);
         tournoiRepsoitory.save(tournoi2);
@@ -98,7 +111,7 @@ public class DataInit implements InitializingBean {
         tournoi4.setNbMaxJoueurs(3);
         tournoi4.setEloMin(500);
         tournoi4.setEloMax(3000);
-        tournoi4.setCategorie(Categorie.VETERAN);
+        tournoi4.setCategorie(Categorie.SENIOR);
         tournoi4.setDateFinInscriptions(LocalDate.parse("2024-10-30"));
         tournoi4.setWomenOnly(false);
         tournoiRepsoitory.save(tournoi4);
@@ -214,6 +227,7 @@ public class DataInit implements InitializingBean {
         Inscription inscription = new Inscription();
         inscription.setTournoi(tournoi13);
         inscription.setUser(user2);
+        tournoi3.setNombreInscriptions(tournoi13.getNombreInscriptions()+1);
         inscriptionRepository.save(inscription);
     }
 

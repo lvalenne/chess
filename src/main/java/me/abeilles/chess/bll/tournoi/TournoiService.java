@@ -15,4 +15,6 @@ void delete(Integer id);
 List<TournoiDTOReadAll> getAll();
 
 TournoiDTOGetOne getOneById(Integer id);
+
+void lance(Integer id);
 }

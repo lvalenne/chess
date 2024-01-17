@@ -59,11 +59,15 @@ public class InscriptionServiceImpl implements InscriptionService {
             throw new InscriptionException("tournoi réservé aux filles");
 
         }
+
+        tournoi.setNombreInscriptions(tournoi.getNombreInscriptions() + 1);
         inscription.setDateInscription(LocalDate.now());
         inscription.setTournoi(tournoi);
         inscription.setUser(user);
 
+
         inscriptionRepository.save(inscription);
+        tournoiRepsoitory.save(tournoi);
 
     }
 
@@ -77,5 +81,8 @@ public class InscriptionServiceImpl implements InscriptionService {
             throw new InscriptionException("le tournoi est déjà en cours ou tyerminé");
 
         }
+        tournoi.setNombreInscriptions(tournoi.getNombreInscriptions() -1);
+        inscriptionRepository.delete(inscription);
+        tournoiRepsoitory.save(tournoi);
     }
 }
