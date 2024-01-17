@@ -1,6 +1,7 @@
 package me.abeilles.chess.bll.tournoi;
 import me.abeilles.chess.bll.exceptions.ForbiddenExeption;
 import me.abeilles.chess.bll.exceptions.NotFoundException;
+import me.abeilles.chess.bll.exceptions.TournoiException;
 import me.abeilles.chess.dal.entities.*;
 import me.abeilles.chess.dal.repositories.InscriptionRepository;
 import me.abeilles.chess.dal.repositories.TournoiRepsoitory;
@@ -11,6 +12,8 @@ import me.abeilles.chess.pl.model.tournoi.TournoiFormCreate;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -70,6 +73,13 @@ public class TournoiServiceImpl implements TournoiService{
         Tournoi tournoi = tournoiRepsoitory.findById(id).orElseThrow(() -> new NotFoundException("tournoi n'existe pas"));
         Rencontre rencontre = new Rencontre();
         Score score = new Score();
+
+        if(tournoi.getNombreInscriptions() < tournoi.getNbMinJoueurs() && tournoi.getDateFinInscriptions().isBefore(LocalDate.now())){
+            throw new TournoiException("Conditions pour demarer tournoi pas satisfaites");
+        }
+        tournoi.setRondeCourante(tournoi.getRondeCourante()+1);
+        tournoi.setDateMaj(LocalDateTime.now());
+        tournoiRepsoitory.save(tournoi);
 
 
     }
