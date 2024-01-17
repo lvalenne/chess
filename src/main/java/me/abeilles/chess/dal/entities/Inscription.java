@@ -24,4 +24,8 @@ public class Inscription {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "tournoi_id")
+    private Tournoi tournoi;
+
 }

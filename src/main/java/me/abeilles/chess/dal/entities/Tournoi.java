@@ -86,12 +86,12 @@ public class Tournoi {
     @JoinColumn(name = "tournoi_id")
     private Set<Rencontre> rencontres = new LinkedHashSet<>();
 
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "tournoi_id")
-    private Set<Inscription> inscriptions = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "tournoi", orphanRemoval = true)
     private Set<Score> scores = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "tournoi", orphanRemoval = true)
+    private Set<Inscription> inscriptions = new LinkedHashSet<>();
 
     public void setDateFinInscriptions(LocalDate dateFinInscriptions) {
         if(dateFinInscriptions.isBefore(LocalDate.now()) || dateFinInscriptions.isBefore(LocalDate.now().plusDays(nbMinJoueurs))){
