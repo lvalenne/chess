@@ -50,7 +50,7 @@ public class TournoiController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/lancer/{id}")
     public void lanceTournoi(@PathVariable Integer id){
-
+        tournoiService.lance(id);
     }
 
 }
