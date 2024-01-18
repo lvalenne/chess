@@ -4,6 +4,7 @@ import me.abeilles.chess.bll.exceptions.NotFoundException;
 import me.abeilles.chess.bll.exceptions.TournoiException;
 import me.abeilles.chess.dal.entities.*;
 import me.abeilles.chess.dal.repositories.InscriptionRepository;
+import me.abeilles.chess.dal.repositories.RencontreRepository;
 import me.abeilles.chess.dal.repositories.TournoiRepsoitory;
 import me.abeilles.chess.pl.model.tournoi.TournoiDTO;
 import me.abeilles.chess.pl.model.tournoi.TournoiDTOGetOne;
@@ -21,11 +22,14 @@ import java.util.stream.Collectors;
 public class TournoiServiceImpl implements TournoiService{
     private final TournoiRepsoitory tournoiRepsoitory;
     private final InscriptionRepository inscriptionRepository;
+    private final RencontreRepository rencontreRepository;
 
 
-    public TournoiServiceImpl(TournoiRepsoitory tournoiRepsoitory, InscriptionRepository inscriptionRepository) {
+    public TournoiServiceImpl(TournoiRepsoitory tournoiRepsoitory, InscriptionRepository inscriptionRepository,
+                              RencontreRepository rencontreRepository) {
         this.tournoiRepsoitory = tournoiRepsoitory;
         this.inscriptionRepository = inscriptionRepository;
+        this.rencontreRepository = rencontreRepository;
     }
 
     @Override
@@ -71,17 +75,50 @@ public class TournoiServiceImpl implements TournoiService{
     @Override
     public void lance(Integer id) {
         Tournoi tournoi = tournoiRepsoitory.findById(id).orElseThrow(() -> new NotFoundException("tournoi n'existe pas"));
-        Rencontre rencontre = new Rencontre();
-        Score score = new Score();
 
-        if(tournoi.getNombreInscriptions() < tournoi.getNbMinJoueurs() && tournoi.getDateFinInscriptions().isBefore(LocalDate.now())){
+        //Score score = new Score();
+
+        if (tournoi.getNombreInscriptions() < tournoi.getNbMinJoueurs() && tournoi.getDateFinInscriptions().isBefore(LocalDate.now())) {
             throw new TournoiException("Conditions pour demarer tournoi pas satisfaites");
         }
-        tournoi.setRondeCourante(tournoi.getRondeCourante()+1);
+
         tournoi.setDateMaj(LocalDateTime.now());
         tournoiRepsoitory.save(tournoi);
 
+        List<User> joueursInscrits = tournoi.getInscriptions().stream().map(i -> i.getUser()).toList();
+        int nbrJoueurs = tournoi.getNombreInscriptions();
+        int nbrRondes = nbrJoueurs - 1;
+        int nbrMatchParRonde = nbrJoueurs / 2;
+        boolean isImpair = joueursInscrits.size() % 2 != 0;
+        if(isImpair){joueursInscrits.add(null);}
 
+        for (int ronde = 0; ronde <= nbrRondes; ronde++) {
+
+            for (int match = 0; match < nbrMatchParRonde; match++) {
+
+
+                User joueur1 = joueursInscrits.get(match) ;
+                User joueur2 = joueursInscrits.get(joueursInscrits.size()-1 - match);
+                if(joueur1 != null && joueur2 != null) {
+
+                    Rencontre rencontre = new Rencontre();
+                    rencontre.setIdJoueurNoir(joueur1);
+                    rencontre.setIdJoueurBlanc(joueur2);
+                    rencontre.setNumeroRonde(ronde + 1);
+                    rencontreRepository.save(rencontre);
+                    Rencontre rencontre2 = new Rencontre();
+                    rencontre2.setIdJoueurNoir(joueur2);
+                    rencontre2.setIdJoueurBlanc(joueur1);
+                    rencontre2.setNumeroRonde(ronde + 1 + joueursInscrits.size());
+                    rencontreRepository.save(rencontre2);
+                }
+
+            }
+            joueursInscrits.add(1, joueursInscrits.remove(joueursInscrits.size()-1));
+
+        }
+        tournoi.setRondeCourante(1);
+        tournoi.setStatut(Statut.EN_COURS);
+        tournoiRepsoitory.save(tournoi);
     }
-
 }
