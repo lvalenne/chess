@@ -78,21 +78,21 @@ public class TournoiServiceImpl implements TournoiService{
 
         //Score score = new Score();
 
-        if (tournoi.getNombreInscriptions() < tournoi.getNbMinJoueurs() && tournoi.getDateFinInscriptions().isBefore(LocalDate.now())) {
+        if (tournoi.getNombreInscriptions() < tournoi.getNbMinJoueurs() || tournoi.getDateFinInscriptions().isBefore(LocalDate.now())) {
             throw new TournoiException("Conditions pour demarer tournoi pas satisfaites");
         }
 
         tournoi.setDateMaj(LocalDateTime.now());
         tournoiRepsoitory.save(tournoi);
 
-        List<User> joueursInscrits = tournoi.getInscriptions().stream().map(i -> i.getUser()).toList();
+        List<User> joueursInscrits = new ArrayList<>(tournoi.getInscriptions().stream().map(i -> i.getUser()).toList());
         int nbrJoueurs = tournoi.getNombreInscriptions();
         int nbrRondes = nbrJoueurs - 1;
         int nbrMatchParRonde = nbrJoueurs / 2;
         boolean isImpair = joueursInscrits.size() % 2 != 0;
         if(isImpair){joueursInscrits.add(null);}
 
-        for (int ronde = 0; ronde <= nbrRondes; ronde++) {
+        for (int ronde = 0; ronde < nbrRondes; ronde++) {
 
             for (int match = 0; match < nbrMatchParRonde; match++) {
 
